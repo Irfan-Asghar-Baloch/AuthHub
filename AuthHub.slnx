@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AuthHub.Application/AuthHub.Application.csproj" />
+  <Project Path="AuthHub.Domain/AuthHub.Domain.csproj" />
+  <Project Path="AuthHub.Infrastructure/AuthHub.Infrastructure.csproj" />
+  <Project Path="AuthHub/AuthHub.API.csproj" />
+</Solution>
