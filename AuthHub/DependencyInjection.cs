@@ -7,8 +7,8 @@ namespace AuthHub.API
     {
         public static IServiceCollection AddApiDI(this IServiceCollection services)
         {
-            services.AddApplicationDI()
-                .AddInfrastructureDI();
+            services.AddApplicationDI();
+              //  .AddInfrastructureDI();
             return services;
         }
     }
