@@ -11,11 +11,13 @@ namespace AuthHub.Application.Services
         private readonly IGenericRepository<User> _repository;
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
-        public UserService( IGenericRepository<User> repository,  IUserRepository userRepository,IPasswordHasher passwordHasher) 
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        public UserService( IGenericRepository<User> repository,  IUserRepository userRepository,IPasswordHasher passwordHasher, IJwtTokenGenerator jwtTokenGenerator) 
         {
             _repository = repository;
             _userRepository = userRepository;
-            _passwordHasher = passwordHasher; 
+            _passwordHasher = passwordHasher;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
 
         public async Task<Response> AddAsync(RegisterDto user)
@@ -61,10 +63,12 @@ namespace AuthHub.Application.Services
                     Message = "Invalid email or password",
                     IsError = true,
                 };
+            var token = _jwtTokenGenerator.GenerateToken(existingUser);
             return new Response
             {
                 IsSuccess = true,
                 Message = "Login successful",
+                Result = new { Token = token },
                 IsError = false,
             };
         }
