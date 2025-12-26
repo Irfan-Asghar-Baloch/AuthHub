@@ -22,5 +22,12 @@ namespace AuthHub.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            var result = await _userService.LoginAsync(dto);
+            return Ok(result);
+        }
+
     }
 }

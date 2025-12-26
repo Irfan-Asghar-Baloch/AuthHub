@@ -5,6 +5,7 @@ namespace AuthHub.Application.Interfaces.Services
     public interface IUserService 
     {
         Task<Response> AddAsync(RegisterDto user);
-       // Task<User?> GetUserByEmailAsync(string email);
+        Task<Response> LoginAsync(LoginDto user);
+        // Task<User?> GetUserByEmailAsync(string email);
     }
 }
