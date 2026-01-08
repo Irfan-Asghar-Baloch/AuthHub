@@ -1,6 +1,5 @@
 ﻿using AuthHub.Application.Interfaces.Repositories;
 using AuthHub.Domain.Entities;
-using AuthHub.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 namespace AuthHub.Infrastructure.Repositories
 {
@@ -17,6 +16,10 @@ namespace AuthHub.Infrastructure.Repositories
         {
 
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        }
+        public async Task<Role?> GetRoleByNameAsync(string roleName)
+        {
+            return await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
         }
     }
 }

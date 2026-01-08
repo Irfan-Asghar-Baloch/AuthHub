@@ -5,9 +5,10 @@ using System.Text;
 
 namespace AuthHub.Application.Interfaces.Repositories
 {
-    public interface IUserRepository
+    public interface IRoleRepository
     {
-        Task<User?> GetByEmailAsync(string email);
-        //Task<Role?> GetRoleByNameAsync(string roleName);
+        public  Task<Role?> GetRoleByNameAsync(string roleName);
+        public Task<Role?> GetRoleByIdAsync(long? roleId);
+
     }
 }

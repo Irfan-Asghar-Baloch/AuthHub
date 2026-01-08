@@ -1,5 +1,4 @@
 ﻿using AuthHub.Application.Interfaces.Repositories;
-using AuthHub.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthHub.Infrastructure.Repositories

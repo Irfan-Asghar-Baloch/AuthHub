@@ -8,16 +8,27 @@ namespace AuthHub.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IGenericRepository<User> _repository;
+        private readonly IGenericRepository<User> _userrepository;
+        private readonly IGenericRepository<Employee> _employeeRepository;
+        private readonly IRoleRepository _roleRepository;   
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        public UserService( IGenericRepository<User> repository,  IUserRepository userRepository,IPasswordHasher passwordHasher, IJwtTokenGenerator jwtTokenGenerator) 
+        public UserService( 
+            IGenericRepository<User> userrepository,
+            IUserRepository userRepository,
+            IPasswordHasher passwordHasher, 
+            IJwtTokenGenerator jwtTokenGenerator , 
+            IGenericRepository<Employee> employeeRepository,
+            IRoleRepository roleRepository
+            ) 
         {
-            _repository = repository;
+            _userrepository = userrepository;
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _employeeRepository = employeeRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<Response> AddAsync(RegisterDto user)
@@ -27,21 +38,38 @@ namespace AuthHub.Application.Services
             var existingUser  = await _userRepository.GetByEmailAsync(user.Email!);
             if (existingUser != null)
                 throw new InvalidOperationException("User with this email already exists");
-
+            var role = await _roleRepository.GetRoleByIdAsync(user.RoleId);
+            if (role == null)
+                throw new InvalidOperationException("Role does not exist");
             var hashedPassword = _passwordHasher.Hash(user.Password); 
 
             var entity = new User
             {
                 Name = user.Name,
                 Email = user.Email,
-                Password = hashedPassword 
+                Password = hashedPassword, 
+                RoleId =role.Id
             };
-            await _repository.AddAsync(entity);
+          var result =  await _userrepository.AddAsync(entity);
+            var emp = new Employee
+            {
+                Name = user.Name,
+                Email = user.Email,
+                UserId = result.Id
+            };
+            await _employeeRepository.AddAsync(emp);
             return new Response
             {
                 IsSuccess = true,
                 Message = "User registered successfully",
-                IsError = false,
+                Result = new RegisterResponseDto
+                {
+                    Id = result.Id,
+                    Name = result.Name!,
+                    Email = result.Email!,
+                    RoleId = role.Id!
+                },
+                IsError = false
             };
         }
 
