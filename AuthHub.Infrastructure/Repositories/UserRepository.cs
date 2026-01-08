@@ -15,7 +15,9 @@ namespace AuthHub.Infrastructure.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
 
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Users
+                .Include(u=>u.Role)
+                .FirstOrDefaultAsync(x => x.Email == email);
         }
         public async Task<Role?> GetRoleByNameAsync(string roleName)
         {

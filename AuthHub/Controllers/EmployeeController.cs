@@ -9,16 +9,46 @@ namespace AuthHub.API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        [HttpGet("Test")]
-        public IActionResult Test()
+        [Authorize(Roles = "HR")]
+        [HttpGet("HrOnly")]
+        public IActionResult HrOnly()
         {
-            return Ok("testing done");
+            return Ok("HR access granted");
         }
+
+        [Authorize(Roles = "HR")]
+        [HttpGet("Hrtest")]
+        public IActionResult Hrtest()
+        {
+            return Ok("Hr access granted test");
+        }
+
         [Authorize(Roles ="Admin")]
         [HttpGet("AdminOnly")]
         public IActionResult AdminOnly()
         {
             return Ok("Admin access granted");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Admintest")]
+        public IActionResult Admintest()
+        {
+            return Ok("Admin access granted test");
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("UserOnly")]
+        public IActionResult UserOnly()
+        {
+            return Ok("User access granted");
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("Usertest")]
+        public IActionResult Usertest()
+        {
+            return Ok("User access granted test");
         }
     }
 }
