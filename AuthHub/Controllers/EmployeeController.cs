@@ -51,4 +51,5 @@ namespace AuthHub.API.Controllers
             return Ok("User access granted test");
         }
     }
+
 }
